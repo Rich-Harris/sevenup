@@ -29,7 +29,7 @@ import { load } from 'sevenup';
   const url = await spritesheet.url('somefile.png');
 
   // get a <canvas>
-  const canvas = await spritesheet.canvas('somefile.png');
+  const canvas = spritesheet.canvas('somefile.png');
 }());
 ```
 
