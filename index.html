@@ -10,7 +10,7 @@
 	<script type="module">
 		import { load } from './index.mjs';
 
-		load('demo/output').then(spritesheet => {
+		load('demo/output').then(async spritesheet => {
 			const canvas = spritesheet.canvas('1f64a.png');
 			document.querySelector('main').appendChild(canvas);
 		});
