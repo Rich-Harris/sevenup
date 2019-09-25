@@ -12,7 +12,7 @@ npx sevenup sourcedir destdir
 This will read all the `.png` and `.jpg` images in `sourcedir` and create two files:
 
 * `destdir/sprite.png`
-* `destdir/manifest.json`
+* `destdir/sprite.json`
 
 *TODO and CSS spritesheet?*
 
