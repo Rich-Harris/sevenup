@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>sevenup demo</title>
+</head>
+<body>
+	<main></main>
+
+	<script type="module">
+		import { load } from './index.mjs';
+
+		load('demo/output').then(spritesheet => {
+			const canvas = spritesheet.canvas('1f64a.png');
+			document.querySelector('main').appendChild(canvas);
+		});
+	</script>
+</body>
+</html>

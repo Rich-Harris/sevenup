@@ -1,0 +1,163 @@
+#!/usr/bin/env node
+
+const path = require('path');
+const fs = require('fs');
+const sade = require('sade');
+const Jimp = require('jimp');
+const c = require('kleur');
+
+const error = msg => {
+	console.error(c.bold().red(msg));
+	process.exit(1);
+};
+
+const extensions = new Set([
+	'.jpg',
+	'.jpeg',
+	'.png'
+]);
+
+sade('sevenup <src> <dest>')
+	.version(require('./package.json').version)
+	.describe('Create a spritesheet')
+	.action(async (src, dest) => {
+		// remove trailing path separators
+		if (src.endsWith(path.sep)) src = src.slice(0, -1);
+		if (dest.endsWith(path.sep)) dest = dest.slice(0, -1);
+
+		if (src === dest) error(`Cannot write to the input directory`);
+
+		const files = fs.readdirSync(src).filter(file => extensions.has(path.extname(file)));
+
+		console.log(`packing ${files.length} files...`);
+
+		const blocks = [];
+		for (const file of files) {
+			const img = await Jimp.read(`${src}/${file}`);
+			blocks.push({
+				x: null,
+				y: null,
+				w: img.bitmap.width,
+				h: img.bitmap.height,
+				s: Math.max(img.bitmap.width, img.bitmap.height),
+				img,
+				file
+			});
+		}
+
+		blocks.sort((a, b) => b.s - a.s);
+		pack(blocks);
+
+		const container = blocks.reduce((acc, block) => {
+			if (block.x + block.w > acc.w) acc.w = block.x + block.w;
+			if (block.y + block.h > acc.h) acc.h = block.y + block.h;
+			return acc;
+		}, {
+			w: 0,
+			h: 0
+		});
+
+		console.log(`creating ${container.w}x${container.h}px sprite`);
+
+		const sprite = new Jimp(container.w, container.h);
+
+		for (const block of blocks) {
+			sprite.blit(block.img, block.x, block.y);
+		}
+
+		await sprite.write(`${dest}/sprite.png`);
+
+		const manifest = blocks.map(({ file, x, y, w, h }) => {
+			return `${JSON.stringify(file)}:[${x},${y},${w},${h}]`
+		}).join(',\n');
+
+		fs.writeFileSync(`${dest}/sprite.json`, `{\n${manifest}\n}`);
+	})
+	.parse(process.argv);
+
+function pack(blocks) {
+	// adapted from https://github.com/jakesgordon/bin-packing/blob/master/js/packer.growing.js
+	// released under MIT license https://github.com/jakesgordon/bin-packing/blob/master/LICENSE
+
+	if (blocks.length === 0) return [];
+
+	blocks.sort((a, b) => b.s - a.s);
+
+	const { w, h } = blocks[0];
+	let root = { x: 0, y: 0, w, h };
+
+	for (let n = 0; n < blocks.length; n++) {
+		const block = blocks[n];
+		const node = findNode(root, block.w, block.h);
+
+		const fit = node
+			? splitNode(node, block.w, block.h)
+			: growNode(block.w, block.h);
+
+		block.x = fit.x;
+		block.y = fit.y;
+	}
+
+	function findNode(root, w, h) {
+		if (root.used) {
+			return findNode(root.right, w, h) || findNode(root.down, w, h);
+		} else if (w <= root.w && h <= root.h) {
+			return root;
+		} else {
+			return null;
+		}
+	}
+
+	function splitNode(node, w, h) {
+		node.used = true;
+		node.down = { x: node.x, y: node.y + h, w: node.w, h: node.h - h };
+		node.right = { x: node.x + w, y: node.y, w: node.w - w, h: h };
+		return node;
+	}
+
+	function growNode(w, h) {
+		var canGrowDown = w <= root.w;
+		var canGrowRight = h <= root.h;
+
+		var shouldGrowRight = canGrowRight && root.h >= root.w + w; // attempt to keep square-ish by growing right when height is much greater than width
+		var shouldGrowDown = canGrowDown && root.w >= root.h + h; // attempt to keep square-ish by growing down  when width  is much greater than height
+
+		if (shouldGrowRight) return growRight(w, h);
+		else if (shouldGrowDown) return growDown(w, h);
+		else if (canGrowRight) return growRight(w, h);
+		else if (canGrowDown) return growDown(w, h);
+		else return null; // need to ensure sensible root starting size to avoid this happening
+	}
+
+	function growRight(w, h) {
+		root = {
+			used: true,
+			x: 0,
+			y: 0,
+			w: root.w + w,
+			h: root.h,
+			down: root,
+			right: { x: root.w, y: 0, w: w, h: root.h }
+		};
+
+		const node = findNode(root, w, h);
+		if (node) return splitNode(node, w, h);
+		else return null;
+	}
+
+	function growDown(w, h) {
+		root = {
+			used: true,
+			x: 0,
+			y: 0,
+			w: root.w,
+			h: root.h + h,
+			down: { x: 0, y: root.h, w: root.w, h: h },
+			right: root
+		};
+
+		const node = findNode(root, w, h);
+		if (node) return splitNode(node, w, h);
+		else return null;
+	}
+}

@@ -1,0 +1,35 @@
+{
+  "name": "sevenup",
+  "version": "1.0.0",
+  "description": "Spritesheet generator and loader",
+  "module": "index.mjs",
+  "bin": {
+    "sevenup": "sevenup"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "demo": "sirv ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Rich-Harris/sevenup.git"
+  },
+  "keywords": [
+    "sprite",
+    "spritesheet"
+  ],
+  "author": "Rich Harris",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rich-Harris/sevenup/issues"
+  },
+  "homepage": "https://github.com/Rich-Harris/sevenup#readme",
+  "dependencies": {
+    "jimp": "^0.8.4",
+    "kleur": "^3.0.3",
+    "sade": "^1.6.1"
+  },
+  "devDependencies": {
+    "sirv-cli": "^0.4.4"
+  }
+}
