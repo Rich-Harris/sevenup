@@ -47,6 +47,7 @@ if (typeof Blob !== 'undefined' && typeof createImageBitmap !== 'undefined') {
 	load_image = src => {
 		return new Promise((fulfil, reject) => {
 			const img = new Image();
+			img.crossOrigin = new URL(dir, window.location).origin !== window.location.origin;
 			img.onload = () => fulfil(img);
 			img.onerror = reject;
 			img.src = src;
