@@ -28,11 +28,11 @@ sade('sevenup-css <srcfile>')
 			}
 			try {
 				const sprite = JSON.parse(spriteContent)
-				let cssSprite = '';
+				let cssSprite = `.sevenup{background-image: url('${spriteImage}.png') !important;}`;
 				for (var key in sprite) {
 					if (sprite.hasOwnProperty(key)) {
 						const spriteElement = sprite[key];
-						cssSprite += `*[class='${key}']{width: ${spriteElement[2]}px;height: ${spriteElement[3]}px;background-image: url('${spriteImage}.png') !important;background-position: top ${-1*spriteElement[1]}px left ${-1*spriteElement[0]}px;}`;
+						cssSprite += `.sevenup[class*='${key}']{width: ${spriteElement[2]}px;height: ${spriteElement[3]}px;background-position: top ${-1*spriteElement[1]}px left ${-1*spriteElement[0]}px;}`;
 					}
 				}
 				console.log(`generating css spritesheet...`);
