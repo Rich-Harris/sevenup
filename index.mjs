@@ -55,11 +55,15 @@ if (typeof Blob !== 'undefined' && typeof createImageBitmap !== 'undefined') {
 	}
 }
 
+const get = (manifest, file) => {
+	const crop = manifest[file];
+	if (!crop) throw new Error(`Could not find ${file} in manifest`);
+	return crop;
+}
 
-export function create(sprite, manifest) {
+export function create(image, manifest) {
 	const canvas = file => {
-		const b = manifest[file];
-		if (!b) throw new Error(`Could not find ${file} in manifest`);
+		const b = get(manifest, file);
 
 		const [x, y, w, h] = b;
 
@@ -67,7 +71,7 @@ export function create(sprite, manifest) {
 		crop.width = w;
 		crop.height = h;
 
-		crop.getContext('2d').drawImage(sprite, x, y, w, h, 0, 0, w, h);
+		crop.getContext('2d').drawImage(image, x, y, w, h, 0, 0, w, h);
 
 		return crop;
 	};
@@ -80,14 +84,24 @@ export function create(sprite, manifest) {
 		});
 	};
 
-	return { canvas, url };
+	const uv = file => {
+		const [x, y, w, h] = get(manifest, file);
+		return [
+			x / image.width,
+			y / image.height,
+			(x + w) / image.width,
+			(y + h) / image.height
+		]
+	};
+
+	return { image, canvas, url, uv };
 }
 
 export async function load(dir) {
-	const [manifest, sprite] = await Promise.all([
-		fetch(`${dir}/sprite.json`).then(r => r.json()),
-		load_image(`${dir}/sprite.png`)
+	const [image, manifest] = await Promise.all([
+		load_image(`${dir}/sprite.png`),
+		fetch(`${dir}/sprite.json`).then(r => r.json())
 	]);
 
-	return create(sprite, manifest);
+	return create(image, manifest);
 }

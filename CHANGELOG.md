@@ -1,5 +1,9 @@
 # sevenup changelog
 
+## 1.1.0
+
+* Add `spritesheet.uvs(filename)` method
+
 ## 1.0.2
 
 * Cross-origin image loading

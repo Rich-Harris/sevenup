@@ -30,6 +30,9 @@ import { load } from 'sevenup';
 
   // get a <canvas>
   const canvas = spritesheet.canvas('somefile.png');
+
+  // get a set of UV coordinates, for use in a WebGL shader
+  const [u1, v1, u2, v2] = spritesheet.uv('somefile.png');
 }());
 ```
 
