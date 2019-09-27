@@ -1,5 +1,9 @@
 # sevenup changelog
 
+## 1.1.1
+
+* Fix loading on browsers without `createImageBitmap`
+
 ## 1.1.0
 
 * Add `spritesheet.uvs(filename)` method
