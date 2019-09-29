@@ -4,7 +4,8 @@
   "description": "Spritesheet generator and loader",
   "module": "index.mjs",
   "bin": {
-    "sevenup": "sevenup"
+    "sevenup": "sevenup",
+    "sevenup-css": "sevenup-css"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
