@@ -99,8 +99,8 @@ export function create(image, manifest) {
 
 export async function load(dir) {
 	const [image, manifest] = await Promise.all([
-		load_image(`${dir}/sprite.png`),
-		fetch(`${dir}/sprite.json`).then(r => r.json())
+		load_image(`${dir}/sprites.png`),
+		fetch(`${dir}/sprites.json`).then(r => r.json())
 	]);
 
 	return create(image, manifest);

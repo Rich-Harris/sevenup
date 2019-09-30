@@ -1,7 +1,7 @@
+
 # sevenup
 
 Utility for making and loading spritesheets.
-
 
 ## CLI
 
@@ -9,12 +9,12 @@ Utility for making and loading spritesheets.
 npx sevenup sourcedir destdir
 ```
 
-This will read all the `.png` and `.jpg` images in `sourcedir` and create two files:
+This will read all the `.png` and `.jpg` images in `sourcedir` and create three files:
 
-* `destdir/sprite.png`
-* `destdir/sprite.json`
 
-*TODO and CSS spritesheet?*
+* `destdir/sprites.png`
+* `destdir/sprites.json`
+* `destdir/sprites.css`
 
 
 ## In browser
@@ -22,7 +22,7 @@ This will read all the `.png` and `.jpg` images in `sourcedir` and create two fi
 ```js
 import { load } from 'sevenup';
 
-(async function () {
+(async function() {
   const spritesheet = await load('destdir');
 
   // get a Blob URL
@@ -38,6 +38,11 @@ import { load } from 'sevenup';
 
 A lower-level `spritesheet = create(img, manifest)` API also exists.
 
+Alternatively, use CSS:
+
+```html
+<div role="img" aria-label="Some alt text" data-sevenup="somefile.png"></div>
+```
 
 ## License
 
