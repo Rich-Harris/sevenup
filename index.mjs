@@ -10,14 +10,17 @@ if (typeof Blob !== 'undefined' && typeof createImageBitmap !== 'undefined') {
 
 	const fn = () => {
 		self.onmessage = e => {
-			fetch(e.data, { mode: 'cors' })
+			const { id, href } = e.data;
+
+			fetch(href, { mode: 'cors' })
 				.then(response => response.blob())
 				.then(data => createImageBitmap(data))
 				.then(bitmap => {
-					self.postMessage({ bitmap }, [bitmap]);
+					self.postMessage({ id, bitmap }, [bitmap]);
 				})
 				.catch(error => {
 					self.postMessage({
+						id,
 						error: {
 							message: error.message,
 							stack: error.stack
@@ -30,17 +33,28 @@ if (typeof Blob !== 'undefined' && typeof createImageBitmap !== 'undefined') {
 	const code = fn.toString().replace(/^(function.+?|.+?=>\s*)\{/g, '').slice(0, -1);
 	worker.postMessage(code);
 
+	let uid = 1;
+
 	load_image = src => {
 		return new Promise((fulfil, reject) => {
-			worker.onmessage = e => {
+			const id = uid++;
+
+			worker.addEventListener('message', function handler(e) {
+				if (e.data.id !== id) return;
+
+				worker.removeEventListener('message', handler);
+
 				if (e.data.error) {
 					reject(e.data.error);
 				}
 
 				else fulfil(e.data.bitmap);
-			};
+			});
 
-			worker.postMessage(new URL(src, location.href).href);
+			worker.postMessage({
+				id,
+				href: new URL(src, location.href).href
+			});
 		});
 	};
 } else {

@@ -1,5 +1,9 @@
 # sevenup changelog
 
+## 1.2.2
+
+* Handle multiple overlapping loads
+
 ## 1.2.1
 
 * Remove unused `sevenup-css` bin
