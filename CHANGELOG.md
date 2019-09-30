@@ -1,5 +1,9 @@
 # sevenup changelog
 
+## 1.2.1
+
+* Remove unused `sevenup-css` bin
+
 ## 1.2.0
 
 * Generate CSS file in addition to JSON manifest

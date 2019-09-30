@@ -1,11 +1,10 @@
 {
   "name": "sevenup",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Spritesheet generator and loader",
   "module": "index.mjs",
   "bin": {
-    "sevenup": "sevenup",
-    "sevenup-css": "sevenup-css"
+    "sevenup": "sevenup"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
