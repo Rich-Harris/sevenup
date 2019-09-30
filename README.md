@@ -25,6 +25,9 @@ import { load } from 'sevenup';
 (async function() {
   const spritesheet = await load('destdir');
 
+  // we have a reference to the image
+  console.log(spritesheet.image.width, spritesheet.image.height);
+
   // get a Blob URL
   const url = await spritesheet.url('somefile.png');
 
