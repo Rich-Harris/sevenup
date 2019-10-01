@@ -1,5 +1,9 @@
 # sevenup changelog
 
+## 1.3.0
+
+* Differentiate between multiple CSS spritesheets on the same page ([#3](https://github.com/Rich-Harris/sevenup/issues/3))
+
 ## 1.2.2
 
 * Handle multiple overlapping loads
