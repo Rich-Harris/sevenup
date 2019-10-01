@@ -67,12 +67,14 @@ sade('sevenup <src> <dest>')
 
 		await sprite.write(`${dest}/sprites.png`);
 
+		const base = path.basename(src);
+
 		let manifest = [];
-		let stylesheet = [`[data-sevenup] { background-image: url('./sprites.png'); background-size: ${sprite.bitmap.width}px ${sprite.bitmap.height}px }`];
+		let stylesheet = [`[data-sevenup^="${base}"] { background-image: url('./sprites.png'); background-size: ${sprite.bitmap.width}px ${sprite.bitmap.height}px }`];
 
 		blocks.forEach(({ file, x, y, w, h }) => {
 			manifest.push(`${JSON.stringify(file)}:[${x},${y},${w},${h}]`);
-			stylesheet.push(`[data-sevenup="${file}"] { width: ${w}px; height: ${h}px; background-position: ${-x}px ${-y}px }`);
+			stylesheet.push(`[data-sevenup="${base}/${file}"] { width: ${w}px; height: ${h}px; background-position: ${-x}px ${-y}px }`);
 		});
 
 		fs.writeFileSync(`${dest}/sprites.json`, `{\n${manifest.join(',\n')}\n}`);

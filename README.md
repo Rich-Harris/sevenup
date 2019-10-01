@@ -44,7 +44,7 @@ A lower-level `spritesheet = create(img, manifest)` API also exists.
 Alternatively, use CSS:
 
 ```html
-<div role="img" aria-label="Some alt text" data-sevenup="somefile.png"></div>
+<div role="img" aria-label="Some alt text" data-sevenup="srcdir/somefile.png"></div>
 ```
 
 ## License
