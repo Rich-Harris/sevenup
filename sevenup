@@ -25,7 +25,15 @@ sade('sevenup <src> <dest>')
 		if (src.endsWith(path.sep)) src = src.slice(0, -1);
 		if (dest.endsWith(path.sep)) dest = dest.slice(0, -1);
 
-		if (src === dest) error(`Cannot write to the input directory`);
+		[src, dest].forEach(dir => {
+			if (!fs.existsSync(src) || !fs.statSync(src).isDirectory()) {
+				error(`${src} is not a directory`);
+			}
+		});
+
+		if (src === dest) {
+			error(`Cannot write to the input directory`);
+		}
 
 		const files = fs.readdirSync(src).filter(file => extensions.has(path.extname(file)));
 
@@ -70,7 +78,7 @@ sade('sevenup <src> <dest>')
 		const base = path.basename(src);
 
 		let manifest = [];
-		let stylesheet = [`[data-sevenup^="${base}"] { background-image: url('./sprites.png'); background-size: ${sprite.bitmap.width}px ${sprite.bitmap.height}px }`];
+		let stylesheet = [`[data-sevenup^="${base}/"] { background-image: url('./sprites.png'); background-size: ${sprite.bitmap.width}px ${sprite.bitmap.height}px }`];
 
 		blocks.forEach(({ file, x, y, w, h }) => {
 			manifest.push(`${JSON.stringify(file)}:[${x},${y},${w},${h}]`);
