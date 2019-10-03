@@ -1,5 +1,10 @@
 # sevenup changelog
 
+## 1.3.1
+
+* Better error when arguments are invalid
+* Properly namespace data attributes
+
 ## 1.3.0
 
 * Differentiate between multiple CSS spritesheets on the same page ([#3](https://github.com/Rich-Harris/sevenup/issues/3))
