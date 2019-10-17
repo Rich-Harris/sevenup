@@ -26,8 +26,8 @@ sade('sevenup <src> <dest>')
 		if (dest.endsWith(path.sep)) dest = dest.slice(0, -1);
 
 		[src, dest].forEach(dir => {
-			if (!fs.existsSync(src) || !fs.statSync(src).isDirectory()) {
-				error(`${src} is not a directory`);
+			if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) {
+				error(`${dir} is not a directory`);
 			}
 		});
 
