@@ -1,5 +1,9 @@
 # sevenup changelog
 
+## 1.3.2
+
+* Check for existence of dest directory ([#5](https://github.com/Rich-Harris/sevenup/pull/5))
+
 ## 1.3.1
 
 * Better error when arguments are invalid
