@@ -36,6 +36,9 @@ import { load } from 'sevenup';
 
   // get a set of UV coordinates, for use in a WebGL shader
   const [u1, v1, u2, v2] = spritesheet.uv('somefile.png');
+
+  // get the bounds of an image
+  const { left, top, right, bottom, width, height } = spritesheet.box('somefile.png');
 }());
 ```
 

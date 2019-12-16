@@ -108,7 +108,12 @@ export function create(image, manifest) {
 		]
 	};
 
-	return { image, canvas, url, uv };
+	const box = file => {
+		const [left, top, width, height] = get(manifest, file);
+		return { left, top, width, height, right: left + width, bottom: top + height };
+	};
+
+	return { image, canvas, url, uv, box };
 }
 
 export async function load(dir) {
