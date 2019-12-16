@@ -1,5 +1,10 @@
 # sevenup changelog
 
+## 1.4.0
+
+* Add `spritesheet.box` method, for getting bounding box of an image
+* Add `--pad`/`-p` flag for generating mipmappable textures
+
 ## 1.3.2
 
 * Check for existence of dest directory ([#5](https://github.com/Rich-Harris/sevenup/pull/5))
