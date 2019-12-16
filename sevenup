@@ -20,7 +20,8 @@ const extensions = new Set([
 sade('sevenup <src> <dest>')
 	.version(require('./package.json').version)
 	.describe('Create a spritesheet')
-	.action(async (src, dest) => {
+	.option('-p, --pad', 'Make width and height a power of two, for WebGL textures')
+	.action(async (src, dest, { pad }) => {
 		// remove trailing path separators
 		if (src.endsWith(path.sep)) src = src.slice(0, -1);
 		if (dest.endsWith(path.sep)) dest = dest.slice(0, -1);
@@ -64,6 +65,11 @@ sade('sevenup <src> <dest>')
 			w: 0,
 			h: 0
 		});
+
+		if (pad) {
+			container.w = find_next_power_of_two(container.w);
+			container.h = find_next_power_of_two(container.h);
+		}
 
 		console.log(`creating ${container.w}x${container.h}px sprite`);
 
@@ -175,4 +181,8 @@ function pack(blocks) {
 		if (node) return splitNode(node, w, h);
 		else return null;
 	}
+}
+
+function find_next_power_of_two(n) {
+	return 2 ** Math.ceil(Math.log2(n));
 }
