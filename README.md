@@ -19,7 +19,7 @@ This will read all the `.png` and `.jpg` images in `sourcedir` and create three 
 To create a `sprites.png` with power-of-two dimensions — useful for WebGL apps, where appropriately-sized textures can have mipmaps generated — use the `--pad` or `-p` flag:
 
 ```
-npx sevenup -p sourcedir destdir
+npx sevenup sourcedir destdir -p
 ```
 
 
