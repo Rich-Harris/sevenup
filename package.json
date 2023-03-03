@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/Rich-Harris/sevenup#readme",
   "dependencies": {
-    "jimp": "^0.8.4",
+    "jimp": "^0.22.7",
     "kleur": "^3.0.3",
     "sade": "^1.6.1"
   },
